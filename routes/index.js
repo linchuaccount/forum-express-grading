@@ -31,6 +31,8 @@ const authenticatedAdmin = (req, res, next) => {
  app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
  // 在 /admin/restaurants 底下則交給 adminController.getRestaurants 處理
  app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
+ app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
+ app.post('/admin/restaurants', authenticatedAdmin, adminController.postRestaurant)
 
  //註冊頁面
  app.get('/signup', userController.signUpPage)
