@@ -1,5 +1,6 @@
 const restController = require('../controllers/restController')
 const adminController = require('../controllers/adminController')
+const userController = require('../controllers/userController')
 
 module.exports = (app) => {
 
@@ -14,4 +15,8 @@ module.exports = (app) => {
  app.get('/admin', (req, res) => res.redirect('/admin/restaurants'))
  // 在 /admin/restaurants 底下則交給 adminController.getRestaurants 處理
  app.get('/admin/restaurants', adminController.getRestaurants)
+
+ //註冊頁面
+ app.get('/signup', userController.signUpPage)
+ app.post('/signup', userController.singUp)
 }
