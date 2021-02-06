@@ -32,6 +32,7 @@ const authenticatedAdmin = (req, res, next) => {
  app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant)
  app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
  app.put('/admin/restaurants/:id', authenticatedAdmin, adminController.putRestaurant)
+ app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
 
  //註冊頁面
  app.get('/signup', userController.signUpPage)
