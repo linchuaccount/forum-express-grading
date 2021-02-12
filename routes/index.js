@@ -24,13 +24,28 @@ module.exports = (app, passport) => {
     }
     res.redirect('/signin')
   }
+  //檢查是否為使用者的profile (有參考同學寫法)
+  const authenticatedprofile = (req, res, next) => {
+    if (Number(helpers.getUser(req).id) === Number(req.params.id)) {
+      return next()
+    } else {
+      req.flash('error_messages', 'you don\'t have permission to modify this profile')
+      return res.redirect(`/users/${req.params.id}`)
+    }
+
+  }
 
   //前台
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
   app.get('/restaurants', authenticated, restController.getRestaurants)
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+
   app.post('/comments', authenticated, commentController.postComment)
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
+
+  app.get('/users/:id', authenticated, userController.getUser)
+  app.get('/users/:id/edit', authenticated, authenticatedprofile, userController.editUser)
+  app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 
   //後台--管理餐廳資料
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
