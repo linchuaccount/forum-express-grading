@@ -32,7 +32,6 @@ module.exports = (app, passport) => {
       req.flash('error_messages', 'you don\'t have permission to modify this profile')
       return res.redirect(`/users/${req.params.id}`)
     }
-
   }
 
   //前台
@@ -40,6 +39,7 @@ module.exports = (app, passport) => {
   app.get('/restaurants', authenticated, restController.getRestaurants)
   app.get('/restaurants/feeds', authenticated, restController.getFeeds)
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+  app.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
 
   app.post('/comments', authenticated, commentController.postComment)
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
