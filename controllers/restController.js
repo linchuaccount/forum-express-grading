@@ -56,12 +56,17 @@ const restController = {
 
   getRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id, {
-      include: [Category, { model: Comment, include: [User] }]
+      include: [
+        Category,
+        { model: User, as: 'FavoritedUsers' },
+        { model: Comment, include: [User] }
+      ]
     }).then(restaurant => {
-      //觀摩同學作業發現要指定column預設值為零(defaultValue:0)，使用increment數字才會增加
-      restaurant.increment('viewCounts', { by: 1 })
+      const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+      restaurant.increment('viewCounts', { by: 1 }) //觀摩同學作業發現要指定column預設值為零(defaultValue:0)，使用increment數字才會增加
       return res.render('restaurant', {
         restaurant: restaurant.toJSON(),
+        isFavorited: isFavorited
       })
     })
   },
