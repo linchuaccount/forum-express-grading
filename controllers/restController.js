@@ -54,8 +54,10 @@ const restController = {
     return Restaurant.findByPk(req.params.id, {
       include: [Category, { model: Comment, include: [User] }]
     }).then(restaurant => {
+      //觀摩同學作業發現要指定column預設值為零(defaultValue:0)，使用increment數字才會增加
+      restaurant.increment('viewCounts', { by: 1 })
       return res.render('restaurant', {
-        restaurant: restaurant.toJSON()
+        restaurant: restaurant.toJSON(),
       })
     })
   },
