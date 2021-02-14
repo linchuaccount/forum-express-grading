@@ -100,7 +100,8 @@ const restController = {
   },
 
   getDashboard: (req, res) => {
-    return Restaurant.findByPk(req.params.id, {
+    return Restaurant.findByPk(
+      req.params.id, {
       include: [Category,
         { model: Comment, include: [User] }]
     }).then(restaurant => {
@@ -108,7 +109,24 @@ const restController = {
       return res.render('dashboard',
         { restaurant: restaurant.toJSON() })
     })
-  }
+  },
 
+  getTopRestaurants: (req, res) => {
+    Restaurant.findAll({
+      include: [{ model: User, as: 'FavoritedUsers' }]
+    }).then(restaurants => {
+      // console.log(restaurants[0])
+      let data = restaurants.map(r => ({
+        ...r.dataValues,
+        description: r.dataValues.description.substring(0, 50),
+        isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id),
+        countFavoritedUser: Number(r.FavoritedUsers.length)
+      }))
+      data = data.sort((a, b) => b.FollowerCount - a.FollowerCount).slice(0, 10)
+      return res.render('topRestaurant', {
+        restaurants: data,
+      })
+    })
+  }
 }
 module.exports = restController
