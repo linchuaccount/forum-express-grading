@@ -55,6 +55,9 @@ module.exports = (app, passport) => {
   app.get('/users/:id/edit', authenticated, authenticatedprofile, userController.editUser)
   app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 
+  app.post('/following/:userId', authenticated, userController.addFollowing)
+  app.delete('/following/:userId', authenticated, userController.removeFollowing)
+
   //後台--管理餐廳資料
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
