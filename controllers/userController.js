@@ -117,7 +117,7 @@ const userController = {
     return Favorite.findOne({
       where: {
         UserId: req.user.id,
-        RestaurantId: req.param.restuarantId
+        RestaurantId: req.params.restaurantId
       }
     }).then((favorite) => {
       favorite.destroy()

@@ -31,8 +31,12 @@ const restController = {
       const data = result.rows.map(r => ({
         ...r.dataValues,
         description: r.dataValues.description.substring(0, 50),
-        categoryName: r.Category.name
+        categoryName: r.dataValues.Category.name,
+        isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id)
       }))
+      // console.log(req.user)
+      // console.log('=============')
+      // console.log(data[0])
       Category.findAll({
         raw: true,
         nest: true
