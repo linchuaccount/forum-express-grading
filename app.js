@@ -42,7 +42,6 @@ app.listen(port, () => {
 
 // 引入 routes
 // 將 app 傳routes，讓 routes 可以用 app 這個物件來指定路由
-// 將 passport 傳入routes，才能在controllers裡使用passport
-require('./routes')(app, passport)
+require('./routes')(app)
 
 module.exports = app
