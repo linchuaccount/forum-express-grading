@@ -10,7 +10,10 @@ let categoryService = {
       if (req.params.id) {
         Category.findByPk(req.params.id)
           .then((category) => {
-            return res.render('admin/categories', { categories: categories, category: category })
+            return res.render('admin/categories', {
+              categories: categories,
+              category: category.toJSON()
+            })
           })
       } else {
         callback({ categories: categories })
@@ -20,7 +23,6 @@ let categoryService = {
 
   postCategory: (req, res, callback) => {
     if (!req.body.name) {
-      // req.flash('error_messages', 'name didn\'t exist')
       return callback({ status: 'error', message: 'name didn\'t exist' })
     } else {
       return Category.create({
@@ -28,6 +30,21 @@ let categoryService = {
       }).then((category) => {
         return callback({ status: 'success', message: 'category was successfully created' })
       })
+    }
+  },
+
+  putCategory: (req, res, callback) => {
+    if (!req.body.name) {
+      // req.flash('error_messages', 'name didn\'t exist')
+      callback({ status: 'error', message: 'name didn\'t exist' })
+    } else {
+      return Category.findByPk(req.params.id)
+        .then((category) => {
+          category.update(req.body)
+            .then((category) => {
+              callback({ status: 'success', message: 'category was successfully updated' })
+            })
+        })
     }
   },
 }
